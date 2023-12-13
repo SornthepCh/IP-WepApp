@@ -12,11 +12,15 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class NavComponent implements OnInit {
   model: any = {}
+  user: User | null = null
   currentUser$: Observable<User | null> = of(null) // isLogin = false
 
   constructor(private toastr: ToastrService, private router: Router, public accountService: AccountService){ }
   ngOnInit(): void {
       this.currentUser$ = this.accountService.currentUser$
+      this.currentUser$.subscribe({
+        next: user => this.user = user
+      })
   }
 
   login(): void {
