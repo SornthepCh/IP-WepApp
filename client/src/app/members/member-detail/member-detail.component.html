@@ -42,9 +42,8 @@
                 <h5>Interests</h5>
                 <p>{{member.interests}}</p>
             </tab>
-            <tab heading="Photos">
-                <h5>Interests</h5>
-                <p>ไม่มีรูปปปปปปปปปปปปปป</p>
+            <tab heading="Photos" #photoTab="tab">
+                <gallery class="gallery" *ngIf="photoTab.active" [items]="photos"></gallery>
             </tab>
             <tab heading="Messages">
                 <h5>Messages</h5>
