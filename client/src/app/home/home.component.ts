@@ -21,7 +21,7 @@ export class HomeComponent implements OnInit {
     })
   }
   ngOnInit(): void {
-    this.getUsers()
+    //this.getUsers()
   }
   cancelRegister(event: boolean) {
     this.regisMode = !event

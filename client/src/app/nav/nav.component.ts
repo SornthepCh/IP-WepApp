@@ -26,7 +26,7 @@ export class NavComponent implements OnInit {
   login(): void {
       this.accountService.login(this.model).subscribe({ //subscribe = Observable
         next: () => this.router.navigateByUrl('/members'),
-        error: err => this.toastr.error(err.error)
+        //error: err => this.toastr.error(err.error)
       })    
   }
   logout() {
