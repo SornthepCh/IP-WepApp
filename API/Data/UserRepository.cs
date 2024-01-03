@@ -30,7 +30,7 @@ public class UserRepository : IUserRepository
 
     public async Task<MemberDto?> GetUserByIdAsync(int id)
     {
-        // return await _dataContext.Users.FindAsync(id);
+        
         return await _dataContext.Users
             .Where(user => user.Id == id)
             .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
