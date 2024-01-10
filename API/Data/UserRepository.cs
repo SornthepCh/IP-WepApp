@@ -22,8 +22,13 @@ public class UserRepository : IUserRepository
             .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
             .SingleOrDefaultAsync();
     }
-
-        public async Task<IEnumerable<MemberDto>> GetMembersAsync()
+    public async Task<AppUser?> GetUserByUserNameAsync(string username)
+    {
+        return await _dataContext.Users
+        .Include(user => user.Photos)
+        .SingleOrDefaultAsync(user => user.UserName == username);
+    }
+    public async Task<IEnumerable<MemberDto>> GetMembersAsync()
     {
         return await _dataContext.Users.ProjectTo<MemberDto>(_mapper.ConfigurationProvider).ToListAsync();
     }
@@ -39,12 +44,7 @@ public class UserRepository : IUserRepository
     
     
 
-    public async Task<AppUser?> GetUserByUserNameAsync(string username)
-    {
-        return await _dataContext.Users
-        .Include(user => user.Photos)
-        .SingleOrDefaultAsync(user => user.UserName == username);
-    }
+    
 
     public async Task<IEnumerable<AppUser>> GetUsersAsync()
     {
