@@ -1,7 +1,7 @@
 ﻿using System;
 using API;
 
-namespace Company.ClassLibrary1;
+namespace API.Entities;
 
 #nullable disable
 public class AppUser

@@ -1,8 +1,10 @@
 using System.Security.Cryptography;
 using System.Text;
+using API.Data;
 using API.DTOs;
+using API.Entities;
 using API.Interfaces;
-using Company.ClassLibrary1;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -34,7 +36,8 @@ public class AccountController : BaseApiController
         var computedHash = hmacSHA256.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password!.Trim()));
         for (int i = 0; i < computedHash.Length; i++)
         {
-            if (computedHash[i] != user.PasswordHash?[i]) return Unauthorized("invalid password");
+            if (computedHash[i] != user.PasswordHash?[i]) 
+            return Unauthorized("invalid password");
         }
         return new UserDto
         {

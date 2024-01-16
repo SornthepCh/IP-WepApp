@@ -1,4 +1,5 @@
-using Company.ClassLibrary1;
+using API.Entities;
+
 
 namespace API.Interfaces;
 

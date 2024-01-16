@@ -1,6 +1,7 @@
 ﻿using API.DTOs;
+using API.Entities;
 using AutoMapper;
-using Company.ClassLibrary1;
+
 
 namespace API;
 
