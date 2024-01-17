@@ -1,9 +1,10 @@
 ﻿using API.DTOs;
 using API.Entities;
+using API.Extensions;
 using AutoMapper;
 
 
-namespace API;
+namespace API.Helpers;
 
 #nullable disable
 public class AutoMapperUserProfiles : Profile
@@ -21,5 +22,6 @@ public class AutoMapperUserProfiles : Profile
             );
         CreateMap<Photo, PhotoDto>();
         CreateMap<MemberUpdateDto, AppUser>();
+        CreateMap<RegisterDto, AppUser>();
     }
 }

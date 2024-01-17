@@ -1,8 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using API.Entities;
 
 
-namespace API;
+namespace API.Entities;
 [Table("Photos")]
 public class Photo
 {
