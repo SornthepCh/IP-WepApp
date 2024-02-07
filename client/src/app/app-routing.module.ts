@@ -11,6 +11,7 @@ import { NotFoundComponent } from './errors/not-found/not-found.component';
 import { ServerErrorComponent } from './errors/server-error/server-error.component';
 import { MemberProfileComponent } from './members/member-profile/member-profile.component';
 import { preventUnsavedChangesGuard } from './_guard/prevent-unsaved-changes.guard';
+import { memberDetailResolver } from './_resolvers/member-detail.resolver';
 
 const routes: Routes = [
   { path: 'errors', component: TestErrorComponent },
@@ -29,7 +30,8 @@ const routes: Routes = [
   { path: 'errors', component: TestErrorComponent },
   { path: 'not-found', component: NotFoundComponent },
   { path: 'server-error', component: ServerErrorComponent },
-  { path: '**', component: NotFoundComponent, pathMatch: 'full' }
+  { path: '**', component: NotFoundComponent, pathMatch: 'full' },
+  { path: 'members/name/:username', component: MemberDetailComponent,resolve:{member:memberDetailResolver} },
 ]
 
 

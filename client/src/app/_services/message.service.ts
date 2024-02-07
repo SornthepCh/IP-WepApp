@@ -20,4 +20,17 @@ export class MessageService {
 
     return getPaginationResult<Message[]>(url, httpParams, this.http)
   }
+  getMessagesThread(username: string) {
+    const url = this.baseUrl + 'messages/thread/' + username
+    return this.http.get<Message[]>(url)
+  }
+  sendMessage(recipientUsername: string, content: string) {
+    const url = this.baseUrl + 'messages'
+    const body = { recipientUsername, content }
+    return this.http.post<Message>(url, body)
+  }
+  deleteMessage(id: number) {
+    const url = this.baseUrl + 'messages/' + id
+    return this.http.delete(url)
+  }
 }
