@@ -12,31 +12,37 @@ import { ServerErrorComponent } from './errors/server-error/server-error.compone
 import { MemberProfileComponent } from './members/member-profile/member-profile.component';
 import { preventUnsavedChangesGuard } from './_guard/prevent-unsaved-changes.guard';
 import { memberDetailResolver } from './_resolvers/member-detail.resolver';
+import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
+import { adminGuard } from './_guard/admin.guard';
 
 const routes: Routes = [
-  { path: 'errors', component: TestErrorComponent },
   { path: '', component: HomeComponent },
   {
-    path: '', runGuardsAndResolvers: 'always', canActivate: [authGuard], children: [
+    path: '',
+    runGuardsAndResolvers: 'always',
+    canActivate: [authGuard],
+    children: [
       { path: 'members', component: MemberListComponent },
       { path: 'members/:id', component: MemberDetailComponent },
-      { path: 'members/name/:username', component: MemberDetailComponent },
       { path: 'lists', component: ListsComponent },
       { path: 'messages', component: MessagesComponent },
-      { path: 'member/profile', component: MemberProfileComponent, canDeactivate: [preventUnsavedChangesGuard] },
-      
-    ]
+      { path: 'admin', component: AdminPanelComponent, canActivate: [adminGuard] },
+    ],
   },
   { path: 'errors', component: TestErrorComponent },
   { path: 'not-found', component: NotFoundComponent },
   { path: 'server-error', component: ServerErrorComponent },
-  { path: '**', component: NotFoundComponent, pathMatch: 'full' },
   { path: 'members/name/:username', component: MemberDetailComponent,resolve:{member:memberDetailResolver} },
-]
-
+  {
+    path: 'member/profile',
+    component: MemberProfileComponent,
+    canDeactivate: [preventUnsavedChangesGuard],
+  },
+  { path: '**', component: NotFoundComponent, pathMatch: 'full' },
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

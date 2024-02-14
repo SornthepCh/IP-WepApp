@@ -2,6 +2,7 @@ using API.Data;
 using API.Entities;
 using API.Extensions;
 using API.Middleware;
+using API.SignalR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,20 +21,25 @@ var app = builder.Build();
 
 app.UseMiddleware<ExceptionMiddleware>();
 
-app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200"));
+app.UseCors(builder => builder.AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials()
+                        .WithOrigins("https://localhost:4200"));
 
 app.UseAuthentication();
 app.UseAuthorization(); 
 
 app.MapControllers();
+app.MapHub<PresenceHub>("hubs/presence");
 
 using var scope = app.Services.CreateScope();
 var service = scope.ServiceProvider;
 try {
     var dataContext = service.GetRequiredService<DataContext>();
     var userManager = service.GetRequiredService<UserManager<AppUser>>(); //
+    var roleManager = service.GetRequiredService<RoleManager<AppRole>>();
     await dataContext.Database.MigrateAsync();
-    await Seed.SeedUsers(userManager); //<--
+    await Seed.SeedUsers(userManager, roleManager);//<--
 }
 catch (System.Exception e)
 {

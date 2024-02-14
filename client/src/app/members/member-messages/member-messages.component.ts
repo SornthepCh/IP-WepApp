@@ -3,6 +3,7 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
 import { faClock, faPaperPlane } from '@fortawesome/free-regular-svg-icons';
+import { NgxLongPress2Module } from 'ngx-long-press2';
 import { TimeagoModule } from 'ngx-timeago';
 import { Message } from 'src/app/_models/message';
 import { MessageService } from 'src/app/_services/message.service';
@@ -10,7 +11,7 @@ import { MessageService } from 'src/app/_services/message.service';
 
 @Component({
   standalone: true, 
-  imports: [CommonModule, FontAwesomeModule, TimeagoModule, FormsModule,],//NgxLongPress2Module
+  imports: [CommonModule, FontAwesomeModule,TimeagoModule,FormsModule,NgxLongPress2Module],
   selector: 'app-member-messages',
   templateUrl: './member-messages.component.html',
   styleUrls: ['./member-messages.component.css']
@@ -44,7 +45,9 @@ export class MemberMessagesComponent implements OnInit {
     this.loadMessages()
   }
   onLongPressMessage(id: number) {
-    console.log('delete me, id: ' + id)
-    this.messages?.splice(this.messages.findIndex(ms => ms.id === id), 1)
+    // console.log('delete me, id: ' + id)
+    this.messageService.deleteMessage(id).subscribe({
+      next: _ => this.messages?.splice(this.messages.findIndex(ms => ms.id === id), 1)
+    })
   }
 }
