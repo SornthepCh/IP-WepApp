@@ -19,6 +19,9 @@ builder.Services.AddAppServices(builder.Configuration);
 builder.Services.AddIdentityServices(builder.Configuration);
 var app = builder.Build();
 
+app.UseDefaultFiles(); // out-> index.html from wwwroot folder
+app.UseStaticFiles();
+
 app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseCors(builder => builder.AllowAnyHeader()
@@ -31,6 +34,8 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.MapHub<PresenceHub>("hubs/presence");
+app.MapHub<MessageHub>("hubs/message");
+app.MapFallbackToController("Index", "Fallback");
 
 using var scope = app.Services.CreateScope();
 var service = scope.ServiceProvider;
@@ -39,7 +44,11 @@ try {
     var userManager = service.GetRequiredService<UserManager<AppUser>>(); //
     var roleManager = service.GetRequiredService<RoleManager<AppRole>>();
     await dataContext.Database.MigrateAsync();
-    await Seed.SeedUsers(userManager, roleManager);//<--
+  //await dataContext.Connections.RemoveRange(dataContext.Connections);//<-- good for small scale
+  //await dataContext.Database.ExecuteSqlRawAsync("TRUNCATE TABLE [Connections]"); //excellent, error for sqlite
+    //await dataContext.Database.ExecuteSqlRawAsync("DELETE FROM [Connections]"); //<--good for sqlite
+    await Seed.ClearConnections(dataContext);
+    await Seed.SeedUsers(userManager, roleManager);
 }
 catch (System.Exception e)
 {

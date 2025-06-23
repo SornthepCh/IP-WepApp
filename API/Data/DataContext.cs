@@ -26,6 +26,8 @@ public class DataContext : IdentityDbContext
     //public DbSet<AppUser> Users { get; set; }
     public DbSet<UserLike> Likes { get; set; } 
     public DbSet<Message> Messages { get; set; }
+    public DbSet<MessageGroup> MessageGroups { get; set; }
+    public DbSet<Connection> Connections { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

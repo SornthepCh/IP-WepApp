@@ -1,8 +1,10 @@
 <div class="card">
   <div class="card-body">
-    <h5 *ngIf="messages.length <= 0">No messages</h5>
-    <ul class="direct-message" style="height: 620px; overflow-y: auto;" *ngIf="messages.length > 0">
-      <li *ngFor="let message of messages" style="width:95%;">
+    <h5 *ngIf="(messageService.messageThread$ | async)?.length === 0">No messages</h5>
+    <ul #messages [scrollTop]="messages.scrollHeight" 
+     class="direct-message" style="height: 620px; overflow-y: auto;" 
+        *ngIf="(messageService.messageThread$ | async)!.length > 0">
+        <li *ngFor="let message of (messageService.messageThread$ | async)" style="width:95%;">
         <div class="row">
           <div [class]="message.senderUsername === username 
                         ? 'col-1' 
@@ -14,7 +16,7 @@
             <div *ngIf="message.senderUsername !== username">
               <div class="header">
                 <small class="text-muted">
-                  <span><fa-icon [icon]="faClock"></fa-icon> {{message.dateSent + 'Z' | timeago}}</span>
+                  <span><fa-icon [icon]="faClock"></fa-icon> {{message.dateSent | timeago}}</span>
                   <span class="text-secondary" *ngIf="!message.dateRead && message.senderUsername !== username">
                     (unread)</span>
                   <span class="text-success" *ngIf="message.dateRead && message.senderUsername !== username">
@@ -37,7 +39,7 @@
             <div *ngIf="message.senderUsername === username">
               <div class="header">
                 <small class="text-muted">
-                  <span><fa-icon [icon]="faClock"></fa-icon> {{message.dateSent + 'Z' | timeago}}</span>
+                  <span><fa-icon [icon]="faClock"></fa-icon> {{message.dateSent | timeago}}</span>
                   <span class="text-secondary" *ngIf="!message.dateRead && message.senderUsername !== username">
                     (unread)</span>
                   <span class="text-success" *ngIf="message.dateRead && message.senderUsername !== username">

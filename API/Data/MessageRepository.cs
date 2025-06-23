@@ -60,4 +60,22 @@ public class MessageRepository : IMessageRepository {
     return await PageList<MessageDto>.CreateAsync(messages, messageParams.PageNumber, messageParams.PageSize);
   }
     public async Task<bool> SaveAllAsync() => await _dataContext.SaveChangesAsync() > 0;
+        public void AddGroup(MessageGroup group)
+    {
+        _dataContext.MessageGroups.Add(group);
+    }
+    public async Task<Connection> GetConnection(string connectionId)
+    {
+        return await _dataContext.Connections.FindAsync(connectionId);
+    }
+    public async Task<MessageGroup> GetMessageGroup(string groupName)
+    {
+        return await _dataContext.MessageGroups
+            .Include(group => group.Connections)
+            .FirstOrDefaultAsync(group => group.Name == groupName);
+    }
+    public void RemoveConnection(Connection connection)
+    {
+        _dataContext.Connections.Remove(connection);
+    }
 }
